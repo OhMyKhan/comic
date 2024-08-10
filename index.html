@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Comic Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to Simple Comic Website</h1>
+    <a href="upload.html">Upload New Comic</a>
+
+    <h2>Uploaded Comics:</h2>
+    <div id="comic-gallery" class="comic-gallery">
+        <!-- Comic images will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        function loadComics() {
+            const gallery = document.getElementById('comic-gallery');
+            const comics = JSON.parse(localStorage.getItem('comics') || '[]');
+
+            comics.forEach(comic => {
+                const img = document.createElement('img');
+                img.src = comic;
+                img.alt = 'Comic Image';
+                img.classList.add('comic');
+
+                gallery.appendChild(img);
+            });
+        }
+
+        window.onload = loadComics;
+    </script>
+</body>
+</html>
