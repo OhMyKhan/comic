@@ -7,33 +7,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Upload Your Comic</h1>
+    <h1>Upload Your Comic (PDF)</h1>
     <a href="index.html">Back to Home</a>
 
     <form id="upload-form">
-        Select image to upload:
-        <input type="file" id="comic-file" accept="image/*">
+        <label for="title">Comic Title:</label>
+        <input type="text" id="title" required>
+
+        <label for="cover-file">Comic Cover:</label>
+        <input type="file" id="cover-file" accept="image/*" required>
+
+        <label for="pdf-file">Comic PDF:</label>
+        <input type="file" id="pdf-file" accept="application/pdf" required>
+
         <button type="submit">Upload Comic</button>
     </form>
 
     <script>
         document.getElementById('upload-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const fileInput = document.getElementById('comic-file');
-            const file = fileInput.files[0];
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const comics = JSON.parse(localStorage.getItem('comics') || '[]');
-                    comics.push(e.target.result);
-                    localStorage.setItem('comics', JSON.stringify(comics));
-                    alert('Comic uploaded successfully!');
-                    window.location.href = 'index.html';
+            const title = document.getElementById('title').value;
+            const coverFile = document.getElementById('cover-file').files[0];
+            const pdfFile = document.getElementById('pdf-file').files[0];
+
+            if (coverFile && pdfFile) {
+                const coverReader = new FileReader();
+                coverReader.onload = function(e) {
+                    const coverData = e.target.result;
+
+                    const pdfReader = new FileReader();
+                    pdfReader.onload = function(e) {
+                        const pdfData = e.target.result;
+
+                        const comics = JSON.parse(localStorage.getItem('comics') || '[]');
+                        comics.push({
+                            title: title,
+                            cover: coverData,
+                            pdf: pdfData
+                        });
+                        localStorage.setItem('comics', JSON.stringify(comics));
+                        alert('Comic uploaded successfully!');
+                        window.location.href = 'index.html';
+                    };
+                    pdfReader.readAsDataURL(pdfFile);
                 };
-                reader.readAsDataURL(file);
+                coverReader.readAsDataURL(coverFile);
             } else {
-                alert('Please select a file.');
+                alert('Please upload a cover and a PDF file.');
             }
         });
     </script>
