@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Viewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Comic Viewer</h1>
+    <a href="index.html">Back to Home</a>
+
+    <div id="pdf-viewer" class="pdf-viewer">
+        <!-- PDF will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        function loadComic() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const comicIndex = urlParams.get('comic');
+            const comics = JSON.parse(localStorage.getItem('comics') || '[]');
+            const comic = comics[comicIndex];
+
+            if (comic && comic.pdf) {
+                const pdfViewer = document.getElementById('pdf-viewer');
+                const pdfEmbed = document.createElement('embed');
+                pdfEmbed.src = comic.pdf;
+                pdfEmbed.type = 'application/pdf';
+                pdfEmbed.width = '100%';
+                pdfEmbed.height = '600px';
+
+                pdfViewer.appendChild(pdfEmbed);
+            } else {
+                alert('Comic not found!');
+            }
+        }
+
+        window.onload = loadComic;
+    </script>
+</body>
+</html>
