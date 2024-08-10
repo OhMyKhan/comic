@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Comic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Upload Your Comic</h1>
+    <a href="index.html">Back to Home</a>
+
+    <form id="upload-form">
+        Select image to upload:
+        <input type="file" id="comic-file" accept="image/*">
+        <button type="submit">Upload Comic</button>
+    </form>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('comic-file');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const comics = JSON.parse(localStorage.getItem('comics') || '[]');
+                    comics.push(e.target.result);
+                    localStorage.setItem('comics', JSON.stringify(comics));
+                    alert('Comic uploaded successfully!');
+                    window.location.href = 'index.html';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a file.');
+            }
+        });
+    </script>
+</body>
+</html>
