@@ -33,10 +33,11 @@
                 const title = document.createElement('h3');
                 title.textContent = comic.title;
 
-                const viewChaptersButton = document.createElement('a');
-                viewChaptersButton.href = `chapters.html?comic=${index}`;
-                viewChaptersButton.textContent = 'View Comic';
-                viewChaptersButton.classList.add('button');
+                const viewComicButton = document.createElement('a');
+                viewComicButton.href = comic.pdf;
+                viewComicButton.textContent = 'View Comic';
+                viewComicButton.classList.add('button');
+                viewComicButton.target = '_blank'; // Membuka PDF di tab baru
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete Comic';
@@ -49,7 +50,7 @@
 
                 comicItem.appendChild(cover);
                 comicItem.appendChild(title);
-                comicItem.appendChild(viewChaptersButton);
+                comicItem.appendChild(viewComicButton);
                 comicItem.appendChild(deleteButton);
                 comicList.appendChild(comicItem);
             });
